@@ -1,12 +1,12 @@
 <script setup>
-import { onMounted } from 'vue';
 import HeaderWrapper from './components/HeaderWrapper.vue'
+import { onBeforeMount } from 'vue'
 import { useUserStore } from './stores/user'
 import supabase from './supabase'
 
 const store = useUserStore()
 
-onMounted(async () => {
+onBeforeMount(async () => {
   const { data: { user } } = await supabase.auth.getUser()
   if (user) {
     store.id = user.id
@@ -16,7 +16,7 @@ onMounted(async () => {
 
 <template>
   <HeaderWrapper/>
-  <main class="text-stone-700 w-5/6 mx-auto max-w-lg py-5">
+  <main class="text-stone-700">
     <router-view />
   </main>
 </template>

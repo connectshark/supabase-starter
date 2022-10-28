@@ -5,21 +5,26 @@
         <router-link to="/">Supabase Starter</router-link>
       </h1>
       <div>
-        <span class=" inline-block mx-2">{{ store.id ? 'Hi' : 'login?' }}</span>
-        <button v-if="store.id" class=" ring-2 ring-white inline-block mx-2" @click="signout">登出</button>
+        <button v-if="store.id" class=" hover:underline" @click="signout">登出</button>
       </div>
     </div>
   </header>
 </template>
 
 <script setup>
+import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '../stores/user'
 import supabase from '../supabase'
 
 const store = useUserStore()
+const route = useRoute()
+const router = useRouter()
 
 const signout = async () => {
   const { error } = await supabase.auth.signOut()
   store.id = ''
+  if (route.meta?.requiresAuth) {
+    router.push('/auth')
+  }
 }
 </script>

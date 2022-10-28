@@ -4,21 +4,22 @@ import supabase from '../supabase'
 
 const useProfile = ({ id }) => {
   const loading = ref(false)
-  const list = ref([])
-  const err = ref(null)
+  const result = ref(null)
+  const err = ref(false)
 
   const doFetch = () => {
     loading.value = true
-    list.value = []
-    err.value = null
+    result.value = null
+    err.value = false
     supabase
       .from('profiles')
       .select('*')
       .eq('id', id)
+      .single()
       .then(({ data, error }) => {
         loading.value = false
-        list.value = data
-        err.value = error
+        result.value = data
+        err.value = error ? true : false
       })
   }
   
@@ -26,7 +27,7 @@ const useProfile = ({ id }) => {
 
   return {
     loading,
-    list,
+    result,
     err,
     reload: doFetch
   }

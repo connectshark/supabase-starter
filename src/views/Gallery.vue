@@ -1,40 +1,28 @@
 <template>
-  <ul class=" grid grid-cols-2 gap-2">
-    <div class=" col-span-2">
-      <figure v-if="upload_img">
-        <img :src="upload_img" alt="">
-      </figure>
-      <p class="mb-2">
-        <input @change="readImg" id="upload" required class=" hidden" type="file" accept=".png, .jpg, .jpeg">
-        <label for="upload" class="block hover:bg-slate-100 cursor-pointer text-center bg-slate-50 py-10">上傳一張圖</label>
-      </p>
-      <p class=" text-right">
-        <button class=" bg-stone-700 text-white p-3 rounded-lg mr-3" type="reset">取消</button>
-        <button class=" bg-stone-700 text-white p-3 rounded-lg" @click="uploadImg">送出</button>
-      </p>
+  <ul class="grid gap-2 w-72 mx-auto">
+    <div class="text-center text-primary" v-if="loading">
+      <i class='bx bx-loader-alt bx-spin bx-lg' ></i>
     </div>
-    <li v-for="photo in list" :key="photo.id">
-      <p>照片編號: {{ photo.id }}</p>
-      <figure>
-        <img :src="photo.img_url">
-      </figure>
-      <p>上傳日期{{ useDateFormat(photo.created_at, 'MM/DD') }}</p>
-      <p>更改日期{{ useDateFormat(photo.updated_at, 'MM/DD') }}</p>
-      <p>{{ photo.description ? photo.description : '無描述' }}</p>
-      <p>
-        <button class=" bg-stone-700 text-white p-3 rounded-lg" @click="deleteImg(photo.id)">刪除照片</button>
-      </p>
-    </li>
+    <FigureWrapper
+      v-else
+      v-for="figure in list"
+      :key="figure.id"
+      :img_url="figure.img_url"
+      :created_at="figure.created_at"
+      :description="figure.description"
+      :id="figure.id"
+      :deleteImg="deleteImg"
+    />
   </ul>
 </template>
 
 <script setup>
-import { useGallery } from '../composable/useGallery'
-import { useDateFormat } from '@vueuse/core'
 import { ref } from 'vue'
 import imgur from 'imgur'
-import supabase from '../supabase';
-import { useUserStore } from '../stores/user';
+import supabase from '../supabase'
+import FigureWrapper from '../components/FigureWrapper.vue'
+import { useGallery } from '../composable/useGallery'
+import { useUserStore } from '../stores/user'
 
 const client = new imgur({ clientId: '3466d7179394743' })
 

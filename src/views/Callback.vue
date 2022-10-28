@@ -1,6 +1,6 @@
 <template>
-  <div class=" grid ">
-
+  <div class="py-20 text-center">
+    <i class='bx bx-loader-circle bx-burst bx-lg' ></i>
   </div>
 </template>
 
