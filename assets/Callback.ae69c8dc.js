@@ -1,0 +1,1 @@
+import{b as e,o as t,c as s,a as c}from"./index.bb664abf.js";const o={class:"py-20 text-center"},r=c("i",{class:"bx bx-loader-circle bx-burst bx-lg"},null,-1),a=[r],p={__name:"Callback",setup(l){return e().replace("/"),(n,u)=>(t(),s("div",o,a))}};export{p as default};
