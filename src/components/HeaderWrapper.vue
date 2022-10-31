@@ -24,7 +24,7 @@ const signout = async () => {
   const { error } = await supabase.auth.signOut()
   store.id = ''
   if (route.meta?.requiresAuth) {
-    router.push('/auth')
+    router.push('/login')
   }
 }
 </script>

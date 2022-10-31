@@ -11,9 +11,24 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/auth',
-      name: 'auth',
-      component: () => import('../views/AuthView.vue')
+      path: '/login',
+      name: 'login',
+      component: () => import('../views/LoginView.vue')
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      component: () => import('../views/SignupView.vue')
+    },
+    {
+      path: '/forgot',
+      name: 'forgot',
+      component: () => import('../views/ForgotView.vue')
+    },
+    {
+      path: '/reset',
+      name: 'reset',
+      component: () => import('../views/ResetView.vue')
     },
     {
       path: '/callback',
@@ -36,7 +51,15 @@ const router = createRouter({
       name: 'new',
       meta: { requiresAuth: true },
       component: () => import('../views/AddImgView.vue')
-    }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      meta: {
+        title: '無頁面'
+      },
+      component: () => import('../views/404.vue')
+    },
   ]
 })
 
@@ -44,7 +67,7 @@ router.beforeEach((to, from) => {
   const store = useUserStore()
   if (to.meta.requiresAuth && !store.id) {
     return {
-      path: '/auth',
+      path: '/login',
       query: {
         redirect: to.fullPath
       }

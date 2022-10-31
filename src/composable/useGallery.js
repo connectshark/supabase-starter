@@ -39,7 +39,6 @@ const useIDGallery = ({ id }) => {
 
   const doFetch = () => {
     loading.value = true
-    list.value = []
     err.value = null
     supabase
       .from('gallery')

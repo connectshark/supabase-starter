@@ -4,7 +4,7 @@
     <p>ID: {{ store.id }}</p>
   </div>
   <div class="w-5/6 mx-auto p-6 text-right">
-    <router-link v-if="!store.id" class=" bg-primary p-3 rounded-lg text-white" to="/auth">登入</router-link>
+    <router-link v-if="!store.id" class=" bg-primary p-3 rounded-lg text-white" to="/login">登入</router-link>
   </div>
   <div class="p-10 bg-slate-200 space-x-7">
     <router-link class=" bg-primary p-3 rounded-lg text-white" to="/new">新增照片</router-link>

@@ -1,7 +1,8 @@
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
+import { useUserStore } from '../stores/user'
 import supabase from '../supabase'
 
-export const useLogin = () => {
+const useLogin = () => {
   const error = ref(false)
   const loading = ref(false)
   const success = ref(null)
@@ -35,7 +36,7 @@ export const useLogin = () => {
   }
 }
 
-export const useSignUp = () => {
+const useSignUp = () => {
   const error = ref(false)
   const loading = ref(false)
   const success = ref(null)
@@ -66,4 +67,97 @@ export const useSignUp = () => {
     signup: doSignUp,
     success
   }
+}
+
+const useFBLogin = () => {
+  const path = import.meta.env.VITE_CALLBACK_URL + '/callback/'
+
+  const doFetch = () => {
+    supabase.auth.signInWithOAuth({
+      provider: 'facebook',
+      options: {
+        redirectTo: path
+      }
+    })
+  }
+
+  return {
+    loginFB: doFetch
+  }
+}
+
+const useForgotPsd = () => {
+  const loading = ref(false)
+  const path = import.meta.env.VITE_CALLBACK_URL + '/reset/'
+  const doFetch = email => {
+    loading.value = true
+    supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: path
+    }).then(() => {
+      loading.value = false
+    })
+  }
+  
+  return {
+    forgotPsd: doFetch,
+    loading
+  }
+}
+
+const useUpdateUser = () => {
+  const loading = ref(false)
+  const success = ref(false)
+  const doFetch = ({ password, email }) => {
+    loading.value = true
+    success.value = false
+    supabase.auth.updateUser({
+      email: email,
+      password: password
+    }).then(res => {
+      loading.value = false
+      if (res.error) {
+        success.value = false
+      } else {
+        success.value = true
+      }
+    })
+  }
+  return {
+    updateUser: doFetch,
+    loading,
+    success
+  }
+}
+
+const useGetUser = () => {
+  const user = ref({})
+  const loading = ref(false)
+  const store = useUserStore()
+
+  const doFetch = () => {
+    loading.value = true
+    supabase.auth.getUser()
+      .then(res => {
+        user.value = res.data.user
+        store.id = res.data.user.id
+        store.email = res.data.user.email
+        loading.value = false
+      })
+  }
+
+  onBeforeMount(doFetch)
+  return {
+    user,
+    reload: doFetch,
+    loading
+  }
+}
+
+export {
+  useFBLogin,
+  useLogin,
+  useSignUp,
+  useForgotPsd,
+  useUpdateUser,
+  useGetUser
 }
