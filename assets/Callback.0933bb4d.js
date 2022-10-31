@@ -1,0 +1,1 @@
+import{a as e,o as t,e as s,f as o}from"./index.c91e31df.js";const c={class:"py-20 text-center"},r=o("i",{class:"bx bx-loader-circle bx-burst bx-lg"},null,-1),a=[r],p={__name:"Callback",setup(l){return e().replace("/"),(n,u)=>(t(),s("div",c,a))}};export{p as default};
