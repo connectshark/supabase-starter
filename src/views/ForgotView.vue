@@ -14,14 +14,21 @@
           <span v-else><i class='bx bx-loader-alt bx-spin' ></i></span>
         </button>
       </div>
+      <div v-if="success">重置Email已送出 請前往信箱重置密碼</div>
     </form>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useForgotPsd } from '../composable/useAuth'
 
-const { forgotPsd, loading } = useForgotPsd()
+const { forgotPsd, loading, success, error } = useForgotPsd()
 const email = ref('')
+
+watch(success, value => {
+  if (value) {
+    email.value = ''
+  }
+})
 </script>

@@ -88,19 +88,26 @@ const useFBLogin = () => {
 
 const useForgotPsd = () => {
   const loading = ref(false)
+  const success = ref(false)
+  const error = ref(null)
   const path = import.meta.env.VITE_CALLBACK_URL + '/reset/'
   const doFetch = email => {
     loading.value = true
+    success.value = false
     supabase.auth.resetPasswordForEmail(email, {
       redirectTo: path
-    }).then(() => {
+    }).then(res => {
       loading.value = false
+      success.value = true
+      error.value = res.error
     })
   }
   
   return {
     forgotPsd: doFetch,
-    loading
+    loading,
+    success,
+    error
   }
 }
 

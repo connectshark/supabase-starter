@@ -28,10 +28,10 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed } from 'vue'
 import { ref } from 'vue'
 import { useUpdateUser } from '../composable/useAuth'
-import { useUserStore } from '../stores/user';
+import { useUserStore } from '../stores/user'
 
 const password = ref('')
 const confirmPassword = ref('')
