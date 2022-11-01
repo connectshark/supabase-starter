@@ -1,7 +1,7 @@
 <template>
-  <li class="shadow-lg rounded-br-3xl">
+  <li class="shadow-lg rounded-br-3xl mb-10">
     <figure class="mb-4">
-      <img class="block w-full h-52 object-contain" :src="props.img_url" loading="lazy">
+      <img class="block w-full h-64 object-contain" :src="props.img_url" loading="lazy">
     </figure>
     <p class=" p-4">上傳日期: {{ formatted }}</p>
   </li>

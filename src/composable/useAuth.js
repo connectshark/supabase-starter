@@ -146,8 +146,8 @@ const useGetUser = () => {
     supabase.auth.getUser()
       .then(res => {
         user.value = res.data.user
-        store.id = res.data.user.id
-        store.email = res.data.user.email
+        store.id = res.data.user?.id
+        store.email = res.data.user?.email
         loading.value = false
       })
   }

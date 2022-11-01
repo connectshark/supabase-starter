@@ -8,3 +8,7 @@
     --color-primary: var(--color-purple);
   }
 }
+
+.h-header-full {
+  height: calc(100vh - 40px);
+}
