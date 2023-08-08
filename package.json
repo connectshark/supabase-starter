@@ -10,8 +10,9 @@
     "type": "git"
   },
   "homepage": "https://github.com/connectshark/supabase-starter",
+  "license": "MIT",
   "scripts": {
-    "dev": "vite --host",
+    "dev": "vite",
     "build": "vite build",
     "preview": "vite preview --port 5050"
   },
