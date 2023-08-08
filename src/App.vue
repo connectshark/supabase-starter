@@ -1,8 +1,19 @@
 <script setup>
 import HeaderWrapper from './components/HeaderWrapper.vue'
-import { useGetUser } from './composable/useAuth'
+import { useUserStore } from './stores/user'
+import supabase from './supabase'
+import { onMounted } from 'vue'
 
-useGetUser()
+
+const store = useUserStore()
+onMounted(async () => {
+  supabase.auth.onAuthStateChange((_, session) => {
+    if (session === null) return
+    store.id = session.user.id
+    store.email = session.user.email
+  })
+})
+
 </script>
 
 <template>

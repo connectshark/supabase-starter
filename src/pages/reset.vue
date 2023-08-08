@@ -2,7 +2,7 @@
   <h2 class=" bg-primary py-10 text-white text-center font-bold text-3xl mb-8 leading-loose">忘記密碼</h2>
 
   <div class=" max-w-lg mx-auto w-5/6">
-    <form @submit.prevent="resetPsd" v-auto-animate>
+    <form @submit.prevent="resetPsd">
       <p class="mb-4">
         <input :disabled="loading" v-model="password" required
           class="focus:ring-2 disabled:text-stone-400 block w-full text-xl text-stone-700 border-none py-6 px-10 rounded-full ring-primary bg-gray-100"
@@ -32,6 +32,12 @@ import { computed } from 'vue'
 import { ref } from 'vue'
 import { useUpdateUser } from '../composable/useAuth'
 import { useUserStore } from '../stores/user'
+import { definePage } from 'vue-router/auto'
+definePage({
+  meta: {
+    requiresAuth: true
+  }
+})
 
 const password = ref('')
 const confirmPassword = ref('')
@@ -45,9 +51,9 @@ const isTheSame = computed(() => {
 const { updateUser, loading, success } = useUpdateUser()
 const store = useUserStore()
 
-const resetPsd = () => {
+const resetPsd = async () => {
   if (!isTheSame.value) return
-  updateUser({
+  await updateUser({
     email: store.email,
     password: confirmPassword.value
   })

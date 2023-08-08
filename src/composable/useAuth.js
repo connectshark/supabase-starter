@@ -3,36 +3,30 @@ import { useUserStore } from '../stores/user'
 import supabase from '../supabase'
 
 const useLogin = () => {
-  const error = ref(false)
+  const err = ref(false)
   const loading = ref(false)
-  const success = ref(null)
+  const result = ref(null)
 
-  const doLogin = ({ email, password }) => {
+  const doLogin = async ({ email, password }) => {
     loading.value = true
-    error.value = false
-    success.value = null
-    supabase.auth.signInWithPassword({
+    err.value = false
+    result.value = null
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: email,
       password: password
     })
-    .then(res => {
-      loading.value = false
-      if (res.data.user) {
-        success.value = res.data.user
-      } else {
-        error.value = true
-      }
-    })
-    .catch(err => {
-      loading.value = false
-      error.value = true
-    })
+    if (error) {
+      err.value = true
+    } else {
+      result.value = data.user
+    }
+    loading.value = false
   }
   return {
     loading,
-    error,
+    err,
     login: doLogin,
-    success
+    result
   }
 }
 
@@ -40,26 +34,20 @@ const useSignUp = () => {
   const error = ref(false)
   const loading = ref(false)
   const success = ref(null)
-  const doSignUp = ({ email, password }) => {
+  const doSignUp = async ({ email, password }) => {
     loading.value = true
     error.value = false
     success.value = null
-    supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email: email,
       password: password
     })
-    .then(res => {
-      loading.value = false
-      if (res.data.user) {
-        success.value = res.data.user
-      } else {
-        error.value = true
-      }
-    })
-    .catch(err => {
-      loading.value = false
+    if (data.user) {
+      success.value = data.user
+    } else {
       error.value = true
-    })
+    }
+    loading.value = false
   }
   return {
     loading,
@@ -70,10 +58,10 @@ const useSignUp = () => {
 }
 
 const useFBLogin = () => {
-  const path = import.meta.env.VITE_CALLBACK_URL + '/callback/'
+  const path = location.origin + '/callback/'
 
-  const doFetch = () => {
-    supabase.auth.signInWithOAuth({
+  const doFetch = async () => {
+    const { data } =  await supabase.auth.signInWithOAuth({
       provider: 'facebook',
       options: {
         redirectTo: path
@@ -89,45 +77,39 @@ const useFBLogin = () => {
 const useForgotPsd = () => {
   const loading = ref(false)
   const success = ref(false)
-  const error = ref(null)
-  const path = import.meta.env.VITE_CALLBACK_URL + '/reset/'
-  const doFetch = email => {
+  const err = ref(null)
+  const path = location.origin + '/reset/'
+  const doFetch = async email => {
     loading.value = true
     success.value = false
-    supabase.auth.resetPasswordForEmail(email, {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: path
-    }).then(res => {
-      loading.value = false
-      success.value = true
-      error.value = res.error
     })
+    loading.value = false
+    success.value = true
+    err.value = error
   }
   
   return {
     forgotPsd: doFetch,
     loading,
     success,
-    error
+    err
   }
 }
 
 const useUpdateUser = () => {
   const loading = ref(false)
   const success = ref(false)
-  const doFetch = ({ password, email }) => {
+  const doFetch = async ({ password, email }) => {
     loading.value = true
     success.value = false
-    supabase.auth.updateUser({
-      email: email,
-      password: password
-    }).then(res => {
-      loading.value = false
-      if (res.error) {
-        success.value = false
-      } else {
-        success.value = true
-      }
+    const { data, error } = await supabase.auth.updateUser({
+      email,
+      password
     })
+    success.value = res.error ? false : true
+    loading.value = false
   }
   return {
     updateUser: doFetch,
@@ -141,15 +123,13 @@ const useGetUser = () => {
   const loading = ref(false)
   const store = useUserStore()
 
-  const doFetch = () => {
+  const doFetch = async () => {
     loading.value = true
-    supabase.auth.getUser()
-      .then(res => {
-        user.value = res.data.user
-        store.id = res.data.user?.id
-        store.email = res.data.user?.email
-        loading.value = false
-      })
+    const { data, error } = await supabase.auth.getUser()
+    user.value = data.user
+    store.id = data.user?.id
+    store.email = data.user?.email
+    loading.value = false
   }
 
   onBeforeMount(doFetch)
@@ -160,11 +140,25 @@ const useGetUser = () => {
   }
 }
 
+const useLogout = () => {
+  const loading = ref(false)
+  const logout = async () => {
+    loading.value = true
+    const { error } = await supabase.auth.signOut()
+    loading.value = false
+  }
+
+  return {
+    logout
+  }
+}
+
 export {
   useFBLogin,
   useLogin,
   useSignUp,
   useForgotPsd,
   useUpdateUser,
-  useGetUser
+  useGetUser,
+  useLogout
 }

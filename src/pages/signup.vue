@@ -1,15 +1,14 @@
 <template>
   <h2 class=" bg-primary py-10 text-white text-center font-bold text-3xl mb-8 leading-loose">註冊</h2>
   <div class=" max-w-lg mx-auto w-5/6">
-    <div class=" text-center mb-4">
+    <!-- <div class=" text-center mb-4">
       <button :disabled="loading" type="button" @click="loginFB()">
         <div class="bg-[#4267B2] inline-block align-middle rounded text-center text-white text-4xl">
           <IconFacebook />
         </div>
         <span class="ml-2 inline-block align-middle">用FB登入</span>
       </button>
-
-    </div>
+    </div> -->
     <form class="mb-4" @submit.prevent="handlerSignup">
       <p class="mb-4">
         <input :disabled="loading" v-model="signupData.email" required

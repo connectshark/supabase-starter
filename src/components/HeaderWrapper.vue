@@ -14,15 +14,20 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router';
 import { useUserStore } from '../stores/user'
-import supabase from '../supabase'
+import { useLogout } from '../composable/useAuth'
 
 const store = useUserStore()
 const route = useRoute()
 const router = useRouter()
 
+
+const {
+  logout
+} = useLogout()
 const signout = async () => {
-  const { error } = await supabase.auth.signOut()
+  await logout()
   store.id = ''
+  store.email = ''
   if (route.meta?.requiresAuth) {
     router.push('/login')
   }

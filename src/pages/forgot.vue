@@ -23,7 +23,11 @@
 import { ref, watch } from 'vue'
 import { useForgotPsd } from '../composable/useAuth'
 
-const { forgotPsd, loading, success, error } = useForgotPsd()
+const {
+  forgotPsd,
+  loading,
+  success
+} = useForgotPsd()
 const email = ref('')
 
 watch(success, value => {
