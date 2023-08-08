@@ -1,6 +1,15 @@
 {
   "name": "supabase-starter",
   "version": "0.1.0",
+  "author": {
+    "name": "Chambers",
+    "url": "https://github.com/connectshark"
+  },
+  "repository": {
+    "url": "https://github.com/connectshark/supabase-starter",
+    "type": "git"
+  },
+  "homepage": "https://github.com/connectshark/supabase-starter",
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
