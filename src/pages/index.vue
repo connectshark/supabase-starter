@@ -12,6 +12,8 @@
 <div class="p-10 bg-slate-200">
   <div class="mx-auto max-w-md space-x-7">
     <router-link class=" bg-primary p-3 rounded-lg text-white" to="/profile">個人資料</router-link>
+    <router-link class=" bg-primary p-3 rounded-lg text-white" to="/todos">TODO</router-link>
+    <router-link class=" bg-primary p-3 rounded-lg text-white" to="/mutiple">多人聊天</router-link>
   </div>
 </div>
 </template>

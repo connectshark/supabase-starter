@@ -12,9 +12,16 @@
 
 快速開發模板架構
 
+[![Preview in vscode.dev](https://img.shields.io/badge/預覽%20in-vscode.dev-blue)](https://vscode.dev/github/connectshark/supabase-starter)
+
+
 ## 目錄
 
 - [專案已安裝內容](#專案已安裝內容)
+- [如何使用快速開發模板](#如何使用快速開發模板)
+  - [專案初始化](#專案初始化)
+  - [快速開發](#快速開發)
+  - [生產版本](#生產版本)
 - [版權](#版權)
 
 ## 專案已安裝內容
